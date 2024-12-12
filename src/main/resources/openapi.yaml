@@ -1,0 +1,306 @@
+openapi: 3.0.3
+info:
+  title: Swagger chl-msa-account - OpenAPI 3.0
+  description: |-
+    <div style="text-align: justify;">
+      <h3>Challenge Develop - Banco Pichincha</h3>
+      <p>This is a contract to manage account and movement data based on the OpenAPI 3.0 specification.This is a contract that uses the API First-Contract principle to standardize the creation of endpoints to be used in our service and improve the development of our APIs.</p>
+    </div>
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: clavijo-marcos@hotmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0 - SNAPSHOT
+
+servers:
+  - url: http://localhost:8081/api/v1
+    description: service
+
+paths:
+  /accounts:
+    get:
+      tags:
+        - account
+      summary: Get all accounts
+      description: Retrieve a list of all accounts
+      operationId: getAllAccounts
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+    post:
+      tags:
+        - account
+      summary: Create a new account
+      description: Create a new account with an Unique ID
+      operationId: createAccount
+      requestBody:
+        description: Created account object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountPersonRequest'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: The server could not understand the request because of incorrect syntax
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /accounts/{accountNumber}:
+    get:
+      tags:
+        - account
+      summary: Get account by account number
+      description: Retrieve a single account by its account number
+      operationId: getAccountByAccountNumber
+      parameters:
+        - name: accountNumber
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - account
+      summary: Update an existing account
+      description: Update an existing account by its account number
+      operationId: updateAccount
+      parameters:
+        - name: accountNumber
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Updated account object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /movements:
+    get:
+      tags:
+        - movement
+      summary: Get all movements
+      description: Retrieve a list of all movements
+      operationId: getAllMovements
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movement'
+    post:
+      tags:
+        - movement
+      summary: Create a new movement
+      description: Create a new movement with an Unique ID
+      operationId: createMovement
+      requestBody:
+        description: Created movement object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movement'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movement'
+        '400':
+          description: The server could not understand the request because of incorrect syntax
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /movements/{id}:
+    get:
+      tags:
+        - movement
+      summary: Get movement by ID
+      description: Retrieve a single movement by its ID
+      operationId: getMovementById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movement'
+        '404':
+          description: Movement not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - movement
+      summary: Update an existing movement
+      description: Update an existing movement by its ID
+      operationId: updateMovement
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Updated movement object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movement'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movement'
+        '404':
+          description: Movement not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        account_number:
+          type: integer
+        account_type:
+          type: string
+        initial_balance:
+          type: number
+          format: double
+        status:
+          type: string
+      required:
+        - account_number
+        - account_type
+        - initial_balance
+        - status
+    Movement:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date
+        movement_type:
+          type: string
+        value:
+          type: number
+          format: double
+        balance:
+          type: number
+          format: double
+      required:
+        - id
+        - date
+        - movement_type
+        - value
+        - balance
+    Person:
+      type: object
+      properties:
+        name:
+          type: string
+        gender:
+          type: string
+        age:
+          type: integer
+        identification:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+      required:
+        - name
+        - gender
+        - age
+        - identification
+        - address
+        - phone
+    Customer:
+      type: object
+      properties:
+        password:
+          type: string
+        status:
+          type: string
+    AccountPersonRequest:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/Account'
+        person:
+          $ref: '#/components/schemas/Person'
+        customer:
+          $ref: '#/components/schemas/Customer'
+    Error:
+      type: object
+      properties:
+        title:
+          type: string
+        detail:
+          type: string
+        status:
+          type: integer

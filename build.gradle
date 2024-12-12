@@ -1,0 +1,125 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
+buildscript {
+	repositories {
+		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath "org.openapitools:openapi-generator-gradle-plugin:7.4.0"
+	}
+}
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.0'
+	id 'io.spring.dependency-management' version '1.1.6'
+	id 'info.solidsoft.pitest' version '1.15.0'
+}
+
+group = 'com.challenge'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+apply plugin: "org.openapi.generator"
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0'
+	implementation 'org.springdoc:springdoc-openapi-starter-common:2.1.0'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
+	implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-r2dbc', version: '3.1.0'
+	implementation group: 'org.postgresql', name: 'r2dbc-postgresql', version: '1.0.1.RELEASE'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
+	implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.0.5'
+
+	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	testImplementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.9.0'
+	testImplementation 'org.pitest:pitest-junit5-plugin:1.2.0'
+}
+
+tasks.register('buildSpringServer', GenerateTask) {
+	generatorName = "spring"
+	inputSpec = "$rootDir/src/main/resources/openapi.yaml".toString()
+	outputDir = "$buildDir/generated".toString()
+	apiPackage = "com.challenge.customer"
+	templateDir = "$rootDir/src/main/resources/openapi-templates"
+	modelPackage = "com.challenge.customer.server.models"
+	library = "spring-boot"
+	configOptions = [
+			skipDefaultInterface : "true",
+			useSpringBoot3 : "true",
+			useJakartaEe : "true",
+			serializableModel : "true",
+			dateLibrary : "java8",
+			openApiNullable : "false",
+			reactive : "true",
+			apiFirst : "false",
+			delegatePattern : "false",
+			configPackage : "com.pichincha.services.config",
+			sourceFolder : "src/main/java",
+			basePackage : "com.pichincha",
+			disallowAdditionalPropertiesIfNotPresent: "true",
+			interfaceOnly : "true"
+	]
+}
+
+compileJava {
+	dependsOn buildSpringServer
+	options.compilerArgs += [
+			"-Amapstruct.suppressGeneratorTimestamp=true",
+			"-Amapstruct.suppressGeneratorVersionInfoComment=true",
+			"-Amapstruct.verbose=true",
+			"-Amapstruct.defaultComponentModel=spring"
+	]
+}
+
+compileJava.dependsOn buildSpringServer
+
+sourceSets.main.java.srcDirs = ["$buildDir/generated/src/main/java", "src/main/java"]
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+pitest {
+	targetClasses = ['com.challenge.customer.*']
+	pitestVersion = '1.9.0'
+	threads = 4
+	outputFormats = ['XML', 'HTML']
+	timestampedReports = false
+	excludedClasses = ['*.dto.', '*.mapper.', '*.exception.', '*.configuration.', '*.helper.', '*.enums.', '*.entity.', '*.domain.']
+}
+
+
