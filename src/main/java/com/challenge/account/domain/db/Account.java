@@ -14,6 +14,7 @@ public class Account {
     @Id
     private Long account_number;
     private String account_type;
+    private Long person_id;
     private Double initial_balance;
     private String status;
 }

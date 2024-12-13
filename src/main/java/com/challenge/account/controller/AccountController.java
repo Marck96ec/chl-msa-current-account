@@ -1,5 +1,6 @@
 package com.challenge.account.controller;
 
+import com.challenge.account.service.AccountService;
 import com.challenge.customer.AccountsApi;
 import com.challenge.customer.server.models.Account;
 import com.challenge.customer.server.models.AccountPersonRequest;
@@ -20,9 +21,12 @@ import static lombok.AccessLevel.PRIVATE;
 @RequestMapping("/api/v1")
 public class AccountController implements AccountsApi {
 
+    AccountService accountService;
+
     @Override
     public Mono<ResponseEntity<Account>> createAccount(AccountPersonRequest accountPersonRequest, ServerWebExchange exchange) {
-        return null;
+        return accountService.createAccount(accountPersonRequest)
+                .map(ResponseEntity::ok);
     }
 
     @Override
