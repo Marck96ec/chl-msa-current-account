@@ -21,4 +21,11 @@ public interface CustomerMapper {
     @Mapping(source = "account.initial_balance", target = "initialBalance")
     @Mapping(source = "account.status", target = "status")
     com.challenge.customer.server.models.Account toAccount(Account account);
+
+    @Mapping(source = "movement.date", target = "date_movement")
+    @Mapping(source = "movement.accountNumber", target = "account_number")
+    @Mapping(source = "movement.movementType", target = "movement_type")
+    @Mapping(source = "movement.value", target = "value_movement")
+    @Mapping(source = "movement.balance", target = "balance")
+    com.challenge.account.domain.db.Movement toMovement(com.challenge.customer.server.models.Movement movement);
 }

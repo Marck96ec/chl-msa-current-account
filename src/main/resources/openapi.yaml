@@ -232,6 +232,7 @@ paths:
                   movement_type: "deposit"
                   value: 500.00
                   balance: 1500.50
+                  account_number: 123456
       responses:
         '201':
           description: successful operation
@@ -247,6 +248,7 @@ paths:
                     movement_type: "deposit"
                     value: 500.00
                     balance: 1500.50
+                    account_number: 123456
         '400':
           description: The server could not understand the request because of incorrect syntax
           content:
@@ -392,12 +394,16 @@ components:
           type: number
           format: double
           example: 1500.50
+        account_number:
+          type: integer
+          example: 123456
       required:
         - id
         - date
         - movement_type
         - value
         - balance
+        - account_number
     Person:
       type: object
       properties:

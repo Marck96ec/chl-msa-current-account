@@ -16,6 +16,7 @@ public class Movement {
     @Id
     private Long id;
     private LocalDate date_movement;
+    private Long account_number;
     private String movement_type;
     private Double value_movement;
     private Double balance;

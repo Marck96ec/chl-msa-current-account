@@ -1,5 +1,6 @@
 package com.challenge.account.controller;
 
+import com.challenge.account.service.MovementService;
 import com.challenge.customer.AccountsApi;
 import com.challenge.customer.MovementsApi;
 import com.challenge.customer.server.models.Account;
@@ -22,9 +23,12 @@ import static lombok.AccessLevel.PRIVATE;
 @RequestMapping("/api/v1")
 public class MovementController implements MovementsApi {
 
+    MovementService movementService;
+
     @Override
     public Mono<ResponseEntity<Movement>> createMovement(Movement movement, ServerWebExchange exchange) {
-        return null;
+        return movementService.registerMovement(movement)
+                .map(ResponseEntity::ok);
     }
 
     @Override
