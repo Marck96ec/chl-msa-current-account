@@ -31,7 +31,9 @@ public class AccountController implements AccountsApi {
 
     @Override
     public Mono<ResponseEntity<Account>> getAccountByAccountNumber(Integer accountNumber, ServerWebExchange exchange) {
-        return null;
+        return accountService.getAccountByAccountNumber(accountNumber)
+                .map(ResponseEntity::ok)
+                .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
     @Override
@@ -41,6 +43,7 @@ public class AccountController implements AccountsApi {
 
     @Override
     public Mono<ResponseEntity<Account>> updateAccount(Integer accountNumber, Account account, ServerWebExchange exchange) {
-        return null;
+        return accountService.updateAccount(accountNumber, account)
+                .map(ResponseEntity::ok);
     }
 }

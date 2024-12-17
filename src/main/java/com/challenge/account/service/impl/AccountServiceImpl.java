@@ -75,6 +75,22 @@ public class AccountServiceImpl implements AccountService {
                 );
     }
 
+    @Override
+    public Mono<Account> getAccountByAccountNumber(Integer accountNumber) {
+        return accountRepository.findById(Long.valueOf(accountNumber))
+                .map(customerMapper::toAccount);
+    }
+
+    @Override
+    public Mono<Account> updateAccount(Integer accountNumber, com.challenge.customer.server.models.Account account) {
+        return accountRepository.findById(Long.valueOf(accountNumber))
+                .flatMap(existingAccount -> {
+                    existingAccount.setStatus(account.getStatus());
+                    return accountRepository.save(existingAccount)
+                            .map(customerMapper::toAccount);
+                });
+    }
+
     private <T> T getValidatedField(T field, String errorMessage) {
         return Optional.ofNullable(field).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage));
     }

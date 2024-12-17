@@ -13,4 +13,8 @@ public interface AccountService {
 
     Mono<com.challenge.customer.server.models.Account> createAccount(AccountPersonRequest accountPersonRequest);
 
+    Mono<com.challenge.customer.server.models.Account> getAccountByAccountNumber(Integer accountNumber);
+
+    Mono<com.challenge.customer.server.models.Account> updateAccount(Integer accountNumber, com.challenge.customer.server.models.Account account);
+
 }
