@@ -1,0 +1,1 @@
+ALTER SEQUENCE chl_account_account_number_seq RESTART WITH 478700;
