@@ -60,7 +60,7 @@ paths:
                   account:
                     account_number: 123456
                     account_type: "savings"
-                    initial_balance: 1000.50
+                    initial_balance: 0
                     status: "true"
                   person:
                     name: "John Doe"
@@ -137,12 +137,12 @@ paths:
                     title: "Not Found"
                     detail: "Account not found"
                     status: 404
-    put:
+    patch:
       tags:
         - account
-      summary: Update an existing account
-      description: Update an existing account by its account number
-      operationId: updateAccount
+      summary: Update account status
+      description: Update the status of an existing account by its account number
+      operationId: updateAccountStatus
       parameters:
         - name: accountNumber
           in: path
@@ -150,18 +150,15 @@ paths:
           schema:
             type: integer
       requestBody:
-        description: Updated account object
+        description: Updated account status
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Account'
-            examples:
-              example-1:
-                value:
-                  account_number: 123456
-                  account_type: "savings"
-                  initial_balance: 1000.50
-                  status: "true"
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: "true"
       responses:
         '200':
           description: successful operation

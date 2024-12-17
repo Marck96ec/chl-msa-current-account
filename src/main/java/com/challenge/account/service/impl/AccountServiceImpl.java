@@ -9,6 +9,7 @@ import com.challenge.account.service.dto.CustomerPersonResponse;
 import com.challenge.account.service.mapper.CustomerMapper;
 import com.challenge.customer.server.models.Account;
 import com.challenge.customer.server.models.AccountPersonRequest;
+import com.challenge.customer.server.models.UpdateAccountStatusRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -82,10 +83,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Mono<Account> updateAccount(Integer accountNumber, com.challenge.customer.server.models.Account account) {
+    public Mono<Account> updateAccount(Integer accountNumber, UpdateAccountStatusRequest updateAccountStatusRequest) {
         return accountRepository.findById(Long.valueOf(accountNumber))
                 .flatMap(existingAccount -> {
-                    existingAccount.setStatus(account.getStatus());
+                    existingAccount.setStatus(Boolean.valueOf(updateAccountStatusRequest.getStatus()));
                     return accountRepository.save(existingAccount)
                             .map(customerMapper::toAccount);
                 });

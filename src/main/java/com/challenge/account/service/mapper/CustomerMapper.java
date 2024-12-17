@@ -13,6 +13,7 @@ public interface CustomerMapper {
     @Mapping(source = "customerPersonResponse.person_id", target = "person_id")
     @Mapping(source = "accountPersonRequest.account.accountType", target = "account_type")
     @Mapping(constant="0", target = "initial_balance")
+    @Mapping(constant="true", target = "status")
     Account toAccountCreate(AccountPersonRequest accountPersonRequest, CustomerPersonResponse customerPersonResponse);
 
 

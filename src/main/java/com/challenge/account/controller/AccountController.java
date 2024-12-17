@@ -4,6 +4,7 @@ import com.challenge.account.service.AccountService;
 import com.challenge.customer.AccountsApi;
 import com.challenge.customer.server.models.Account;
 import com.challenge.customer.server.models.AccountPersonRequest;
+import com.challenge.customer.server.models.UpdateAccountStatusRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +43,10 @@ public class AccountController implements AccountsApi {
     }
 
     @Override
-    public Mono<ResponseEntity<Account>> updateAccount(Integer accountNumber, Account account, ServerWebExchange exchange) {
-        return accountService.updateAccount(accountNumber, account)
+    public Mono<ResponseEntity<Account>> updateAccountStatus(Integer accountNumber, UpdateAccountStatusRequest updateAccountStatusRequest, ServerWebExchange exchange) {
+        return accountService.updateAccount(accountNumber, updateAccountStatusRequest)
                 .map(ResponseEntity::ok);
     }
+
+
 }
