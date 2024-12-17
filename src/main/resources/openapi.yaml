@@ -64,11 +64,11 @@ paths:
                     status: "true"
                   person:
                     name: "John Doe"
-                    gender: "male"
+                    gender: "masculino"
                     age: 30
                     identification: "1234567890"
                     address: "123 Main St"
-                    phone: "555-1234"
+                    phone: "5551234567"
                   customer:
                     password: "password123"
                     status: "true"
@@ -412,7 +412,7 @@ components:
           example: "John Doe"
         gender:
           type: string
-          example: "male"
+          example: "masculino"
         age:
           type: integer
           example: 30
@@ -424,7 +424,7 @@ components:
           example: "123 Main St"
         phone:
           type: string
-          example: "555-1234"
+          example: "5551234567"
       required:
         - identification
     Customer:
