@@ -36,7 +36,7 @@ public class AccountController implements AccountsApi {
 
     @Override
     public Mono<ResponseEntity<Flux<Account>>> getAllAccounts(ServerWebExchange exchange) {
-        return null;
+        return Mono.just(ResponseEntity.ok(accountService.getAllAccounts()));
     }
 
     @Override

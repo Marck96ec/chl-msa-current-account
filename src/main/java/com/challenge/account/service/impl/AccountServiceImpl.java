@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -40,6 +41,12 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     CustomerMapper customerMapper;
 
+
+    @Override
+    public Flux<Account> getAllAccounts() {
+        return accountRepository.findAll()
+                .map(customerMapper::toAccount);
+    }
 
     @Override
     public Mono<Account> createAccount(AccountPersonRequest accountPersonRequest) {
