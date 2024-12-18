@@ -36,12 +36,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Account'
               examples:
-                example-1:
-                  value:
-                    - account_number: 123456
-                      account_type: "savings"
-                      initial_balance: 1000.50
-                      status: "true"
+                AccountListExample-1:
+                  $ref: '#/components/examples/AccountListExample-1'
     post:
       tags:
         - account
@@ -55,23 +51,8 @@ paths:
             schema:
               $ref: '#/components/schemas/AccountPersonRequest'
             examples:
-              example-1:
-                value:
-                  account:
-                    account_number: 123456
-                    account_type: "savings"
-                    initial_balance: 0
-                    status: "true"
-                  person:
-                    name: "John Doe"
-                    gender: "masculino"
-                    age: 30
-                    identification: "1234567890"
-                    address: "123 Main St"
-                    phone: "5551234567"
-                  customer:
-                    password: "password123"
-                    status: "true"
+              AccountListExample-1:
+                $ref: '#/components/examples/AccountPersonRequestExample-1'
       responses:
         '201':
           description: successful operation
@@ -80,12 +61,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Account'
               examples:
-                example-1:
-                  value:
-                    account_number: 123456
-                    account_type: "savings"
-                    initial_balance: 1000.50
-                    status: "true"
+                AccountListExample-1:
+                  $ref: '#/components/examples/AccountPersonPostResponseExample-1'
         '400':
           description: The server could not understand the request because of incorrect syntax
           content:
@@ -119,12 +96,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Account'
               examples:
-                example-1:
-                  value:
-                    account_number: 123456
-                    account_type: "savings"
-                    initial_balance: 1000.50
-                    status: "true"
+                AccountListExample-1:
+                  $ref: '#/components/examples/AccountPersonPostResponseExample-1'
         '404':
           description: Account not found
           content:
@@ -167,12 +140,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Account'
               examples:
-                example-1:
-                  value:
-                    account_number: 123456
-                    account_type: "savings"
-                    initial_balance: 1000.50
-                    status: "true"
+                AccountListExample-1:
+                  $ref: '#/components/examples/AccountPersonPostResponseExample-1'
         '404':
           description: Account not found
           content:
@@ -202,13 +171,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Movement'
               examples:
-                example-1:
-                  value:
-                    - id: 1
-                      date: "2023-01-01"
-                      movement_type: "deposit"
-                      value: 500.00
-                      balance: 1500.50
+                AccountListExample-1:
+                  $ref: '#/components/examples/MovementsExample-1'
     post:
       tags:
         - movement
@@ -232,14 +196,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Movement'
               examples:
-                example-1:
-                  value:
-                    id: 1
-                    date: "2023-01-01"
-                    movement_type: "deposit"
-                    value: 500.00
-                    balance: 1500.50
-                    account_number: 123456
+                MovementExample-1:
+                  $ref: '#/components/examples/MovementPostResponseExample-1'
+
         '400':
           description: The server could not understand the request because of incorrect syntax
           content:
@@ -273,13 +232,8 @@ paths:
               schema:
                   $ref: '#/components/schemas/Movement'
               examples:
-                example-1:
-                  value:
-                    id: 1
-                    date: "2023-01-01"
-                    movement_type: "deposit"
-                    value: 500.00
-                    balance: 1500.50
+                MovementExample-1:
+                  $ref: '#/components/examples/MovementGetResponseExample-1'
         '404':
           description: Movement not found
           content:
@@ -311,13 +265,8 @@ paths:
             schema:
               $ref: '#/components/schemas/Movement'
             examples:
-              example-1:
-                value:
-                  id: 1
-                  date: "2023-01-01"
-                  movement_type: "deposit"
-                  value: 500.00
-                  balance: 1500.50
+              MovementExample-1:
+                $ref: '#/components/examples/MovementGetResponseExample-1'
       responses:
         '200':
           description: successful operation
@@ -326,13 +275,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Movement'
               examples:
-                example-1:
-                  value:
-                    id: 1
-                    date: "2023-01-01"
-                    movement_type: "deposit"
-                    value: 500.00
-                    balance: 1500.50
+                MovementExample-1:
+                  $ref: '#/components/examples/MovementGetResponseExample-1'
         '404':
           description: Movement not found
           content:
@@ -367,12 +311,12 @@ paths:
             type: string
             format: date
           description: End date of the range
-        - name: clientId
+        - name: identification
           in: query
           required: true
           schema:
             type: integer
-          description: Client ID
+          description: identification
       responses:
         '200':
           description: Successful operation
@@ -503,6 +447,7 @@ components:
         status:
           type: integer
           example: 400
+
   examples:
     MovementExample-1:
       value:
@@ -519,3 +464,54 @@ components:
         status: "true"
         movement: 500.00
         availableBalance: 1500.50
+    AccountListExample-1:
+      value:
+        - account_number: 123456
+          account_type: "savings"
+          initial_balance: 1000.50
+          status: "true"
+    AccountPersonRequestExample-1:
+      value:
+        account:
+          account_number: 123456
+          account_type: "savings"
+          initial_balance: 0
+          status: "true"
+        person:
+          name: "John Doe"
+          gender: "masculino"
+          age: 30
+          identification: "1234567890"
+          address: "123 Main St"
+          phone: "5551234567"
+        customer:
+          password: "password123"
+          status: "true"
+    AccountPersonPostResponseExample-1:
+      value:
+        account_number: 123456
+        account_type: "savings"
+        initial_balance: 1000.50
+        status: "true"
+    MovementsExample-1:
+      value:
+        - id: 1
+          date: "2023-01-01"
+          movement_type: "deposit"
+          value: 500.00
+          balance: 1500.50
+    MovementPostResponseExample-1:
+      value:
+        id: 1
+        date: "2023-01-01"
+        movement_type: "deposit"
+        value: 500.00
+        balance: 1500.50
+        account_number: 123456
+    MovementGetResponseExample-1:
+      value:
+        id: 1
+        date: "2023-01-01"
+        movement_type: "deposit"
+        value: 500.00
+        balance: 1500.50

@@ -28,6 +28,9 @@ public class MovementServiceImpl implements MovementService {
     public Mono<Movement> registerMovement(Movement movement) {
         return accountRepository.findById(Long.valueOf(movement.getAccountNumber()))
                 .flatMap(account -> {
+                    if (!account.getStatus()) {
+                        return Mono.error(new RuntimeException("La cuenta se encuentra desactivada"));
+                    }
                     double newBalance = account.getInitial_balance() + movement.getValue();
                     double initialBalance = account.getInitial_balance();
                     if (newBalance < 0) {
