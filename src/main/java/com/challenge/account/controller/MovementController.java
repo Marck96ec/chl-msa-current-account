@@ -33,12 +33,13 @@ public class MovementController implements MovementsApi {
 
     @Override
     public Mono<ResponseEntity<Flux<Movement>>> getAllMovements(ServerWebExchange exchange) {
-        return null;
+        return Mono.just(ResponseEntity.ok(movementService.getAllMovements()));
     }
 
     @Override
     public Mono<ResponseEntity<Movement>> getMovementById(Integer id, ServerWebExchange exchange) {
-        return null;
+        return movementService.getMovementById(id)
+                .map(ResponseEntity::ok);
     }
 
     @Override

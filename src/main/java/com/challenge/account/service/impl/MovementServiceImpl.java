@@ -4,12 +4,12 @@ package com.challenge.account.service.impl;
 import com.challenge.account.repository.AccountRepository;
 import com.challenge.account.repository.MovementRepository;
 import com.challenge.account.service.MovementService;
-import com.challenge.account.service.mapper.AccountMapper;
 import com.challenge.account.service.mapper.MovementMapper;
 import com.challenge.customer.server.models.Movement;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -41,5 +41,18 @@ public class MovementServiceImpl implements MovementService {
                 })
                 .switchIfEmpty(Mono.error(new RuntimeException("Cuenta no encontrada")));
     }
+
+    @Override
+    public Flux<Movement> getAllMovements() {
+        return movementRepository.findAll()
+                .map(movementMapper::toMovementResponse);
+    }
+
+    @Override
+    public Mono<Movement> getMovementById(Integer id) {
+        return movementRepository.findById(Long.valueOf(id))
+                .map(movementMapper::toMovementResponse);
+    }
+
 
 }

@@ -81,6 +81,7 @@ public class AccountServiceImpl implements AccountService {
                 .map(accountMapper::toAccount);
     }
 
+
     @Override
     public Mono<Account> updateAccount(Integer accountNumber, UpdateAccountStatusRequest updateAccountStatusRequest) {
         return accountRepository.findById(Long.valueOf(accountNumber))
@@ -89,6 +90,12 @@ public class AccountServiceImpl implements AccountService {
                     return accountRepository.save(existingAccount)
                             .map(accountMapper::toAccount);
                 });
+    }
+
+    @Override
+    public Flux<Account> getAccountByPersonId(Integer personId) {
+        return accountRepository.findByPersonId(Long.valueOf(personId))
+                .map(accountMapper::toAccount);
     }
 
     private <T> T getValidatedField(T field, String errorMessage) {

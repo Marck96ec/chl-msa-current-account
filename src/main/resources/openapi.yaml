@@ -271,7 +271,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Movement'
+                  $ref: '#/components/schemas/Movement'
               examples:
                 example-1:
                   value:
@@ -345,9 +345,85 @@ paths:
                     title: "Not Found"
                     detail: "Movement not found"
                     status: 404
+  /reports:
+    get:
+      tags:
+        - reports
+      summary: Get account statement
+      description: Get the account statement of a client within a date range
+      operationId: getAccountStatement
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Start date of the range
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: End date of the range
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Client ID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountStatement'
+              examples:
+                AccountStatementExample-1:
+                    $ref: '#/components/examples/AccountStatementExample-1'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Client not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
 
 components:
   schemas:
+    AccountStatement:
+      type: object
+      properties:
+        date:
+          type: string
+        client:
+          type: string
+        accountNumber:
+          type: integer
+        accountType:
+          type: string
+        initialBalance:
+          type: number
+          format: double
+        status:
+          type: boolean
+        movement:
+          type: number
+          format: double
+        availableBalance:
+          type: number
+          format: double
     Account:
       type: object
       properties:
@@ -433,3 +509,13 @@ components:
         movement_type: "deposit"
         value: 500.00
         account_number: 123456
+    AccountStatementExample-1:
+      value:
+        date: "2023-01-01"
+        client: "John Doe"
+        accountNumber: 123456
+        accountType: "savings"
+        initialBalance: 1000.50
+        status: "true"
+        movement: 500.00
+        availableBalance: 1500.50

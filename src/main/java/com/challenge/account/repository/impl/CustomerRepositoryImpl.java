@@ -26,6 +26,20 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
 
     @Override
+    public Mono<CustomerPersonResponse> getCustomerById(Long id, Map<String, String> headers) {
+        return webClientHelper.builder()
+                .header(headers)
+                .basePath(properties.getServices().getCustomer().getBaseUrl())
+                .build()
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(properties.getServices().getCustomer().getGetIdentificationPath().concat("/").concat(String.valueOf(id))).build()
+                )
+                .retrieve()
+                .bodyToMono(CustomerPersonResponse.class);
+    }
+
+    @Override
     public Mono<CustomerPersonResponse> getCustomerByIdentification(Integer identification, Map<String, String> headers) {
 
         return webClientHelper.builder()
@@ -34,7 +48,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                 .build()
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(properties.getServices().getCustomer().getGetIdentificationPath().concat("/").concat(String.valueOf(identification))).build()
+                        .path(properties.getServices().getCustomer().getGetIdentificationPath().concat("/identification/").concat(String.valueOf(identification))).build()
                 )
                 .retrieve()
                 .bodyToMono(CustomerPersonResponse.class);
