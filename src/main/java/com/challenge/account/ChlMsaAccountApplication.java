@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.challenge.account"})
+@ComponentScan(basePackages = {"com.challenge"})
 @EnableConfigurationProperties({ApplicationPropertiesConfiguration.class})
 public class ChlMsaAccountApplication {
 
