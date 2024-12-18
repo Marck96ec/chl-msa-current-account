@@ -5,8 +5,7 @@ import com.challenge.account.repository.AccountRepository;
 import com.challenge.account.repository.CustomerRepository;
 import com.challenge.account.service.AccountService;
 import com.challenge.account.service.dto.CustomerPerson;
-import com.challenge.account.service.dto.CustomerPersonResponse;
-import com.challenge.account.service.mapper.CustomerMapper;
+import com.challenge.account.service.mapper.AccountMapper;
 import com.challenge.customer.server.models.Account;
 import com.challenge.customer.server.models.AccountPersonRequest;
 import com.challenge.customer.server.models.UpdateAccountStatusRequest;
@@ -40,13 +39,13 @@ public class AccountServiceImpl implements AccountService {
     CustomerRepository customerRepository;
 
     @Autowired
-    CustomerMapper customerMapper;
+    AccountMapper accountMapper;
 
 
     @Override
     public Flux<Account> getAllAccounts() {
         return accountRepository.findAll()
-                .map(customerMapper::toAccount);
+                .map(accountMapper::toAccount);
     }
 
     @Override
@@ -54,8 +53,8 @@ public class AccountServiceImpl implements AccountService {
         Integer identification = Integer.valueOf(accountPersonRequest.getPerson().getIdentification());
         return customerRepository.getCustomerByIdentification(identification, null)
                 .flatMap(existingCustomer -> {
-                    return accountRepository.save(customerMapper.toAccountCreate(accountPersonRequest, existingCustomer))
-                            .map(customerMapper::toAccount);
+                    return accountRepository.save(accountMapper.toAccountCreate(accountPersonRequest, existingCustomer))
+                            .map(accountMapper::toAccount);
                 })
                 .switchIfEmpty(
                         customerRepository.PostCustomerCreate(
@@ -70,8 +69,8 @@ public class AccountServiceImpl implements AccountService {
                                                 .phone(getValidatedField(accountPersonRequest.getPerson().getPhone(), EL_CLIENTE_NO_EXISTE_COMPLETE_LA_INFORMACION_NECESARIA))
                                                 .build(), buildHeaders(new HttpHeaders()))
                                 .flatMap(newCustomer ->
-                                        accountRepository.save(customerMapper.toAccountCreate(accountPersonRequest, newCustomer))
-                                                .map(customerMapper::toAccount)
+                                        accountRepository.save(accountMapper.toAccountCreate(accountPersonRequest, newCustomer))
+                                                .map(accountMapper::toAccount)
                                 )
                 );
     }
@@ -79,7 +78,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Mono<Account> getAccountByAccountNumber(Integer accountNumber) {
         return accountRepository.findById(Long.valueOf(accountNumber))
-                .map(customerMapper::toAccount);
+                .map(accountMapper::toAccount);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class AccountServiceImpl implements AccountService {
                 .flatMap(existingAccount -> {
                     existingAccount.setStatus(Boolean.valueOf(updateAccountStatusRequest.getStatus()));
                     return accountRepository.save(existingAccount)
-                            .map(customerMapper::toAccount);
+                            .map(accountMapper::toAccount);
                 });
     }
 

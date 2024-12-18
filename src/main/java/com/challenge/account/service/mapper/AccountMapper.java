@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface CustomerMapper {
+public interface AccountMapper {
 
     @Mapping(source = "customerPersonResponse.person_id", target = "person_id")
     @Mapping(source = "accountPersonRequest.account.accountType", target = "account_type")
@@ -23,10 +23,4 @@ public interface CustomerMapper {
     @Mapping(source = "account.status", target = "status")
     com.challenge.customer.server.models.Account toAccount(Account account);
 
-    @Mapping(source = "movement.date", target = "date_movement")
-    @Mapping(source = "movement.accountNumber", target = "account_number")
-    @Mapping(source = "movement.movementType", target = "movement_type")
-    @Mapping(source = "movement.value", target = "value_movement")
-    @Mapping(source = "movement.balance", target = "balance")
-    com.challenge.account.domain.db.Movement toMovement(com.challenge.customer.server.models.Movement movement);
 }

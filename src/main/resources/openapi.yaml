@@ -222,14 +222,8 @@ paths:
             schema:
               $ref: '#/components/schemas/Movement'
             examples:
-              example-1:
-                value:
-                  id: 1
-                  date: "2023-01-01"
-                  movement_type: "deposit"
-                  value: 500.00
-                  balance: 1500.50
-                  account_number: 123456
+              MovementExample-1:
+                $ref: '#/components/examples/MovementExample-1'
       responses:
         '201':
           description: successful operation
@@ -359,69 +353,50 @@ components:
       properties:
         account_number:
           type: integer
-          example: 123456
         account_type:
           type: string
-          example: "savings"
         initial_balance:
           type: number
           format: double
-          example: 1000.50
         status:
           type: string
-          example: "true"
     Movement:
       type: object
       properties:
         id:
           type: integer
-          example: 1
         date:
           type: string
           format: date
-          example: "2023-01-01"
         movement_type:
           type: string
-          example: "deposit"
         value:
           type: number
           format: double
-          example: 500.00
         balance:
           type: number
           format: double
-          example: 1500.50
         account_number:
           type: integer
-          example: 123456
       required:
-        - id
-        - date
         - movement_type
         - value
-        - balance
         - account_number
     Person:
       type: object
       properties:
         name:
           type: string
-          example: "John Doe"
         gender:
           type: string
-          example: "masculino"
         age:
           type: integer
-          example: 30
         identification:
           type: string
-          example: "1234567890"
         address:
           type: string
-          example: "123 Main St"
         phone:
           type: string
-          example: "5551234567"
       required:
         - identification
     Customer:
@@ -429,10 +404,8 @@ components:
       properties:
         password:
           type: string
-          example: "password123"
         status:
           type: string
-          example: "true"
     AccountPersonRequest:
       type: object
       properties:
@@ -454,3 +427,9 @@ components:
         status:
           type: integer
           example: 400
+  examples:
+    MovementExample-1:
+      value:
+        movement_type: "deposit"
+        value: 500.00
+        account_number: 123456
